@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --surface: #0c0c0e;
+  --elevated: #141416;
+  --card: #111113;
+  --card-foreground: #fafafa;
+  --popover: #141416;
+  --popover-foreground: #fafafa;
+  --primary: #0d9488;
+  --primary-foreground: #ffffff;
+  --secondary: #71717a;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #71717a;
+  --accent: #1c1c1f;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #14b8a6;
+  --radius: 0.75rem;
+  --chart-grid: rgba(255, 255, 255, 0.04);
+  --chart-axis: #52525b;
+}
+
+.light {
+  --background: #fafafa;
+  --foreground: #09090b;
+  --surface: #f4f4f5;
+  --elevated: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #0d9488;
+  --primary-foreground: #ffffff;
+  --secondary: #71717a;
+  --secondary-foreground: #09090b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #09090b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --input: rgba(0, 0, 0, 0.06);
+  --ring: #14b8a6;
+  --chart-grid: rgba(0, 0, 0, 0.06);
+  --chart-axis: #a1a1aa;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(13, 148, 136, 0.28);
+    color: #fafafa;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+@layer utilities {
+  .page-container {
+    @apply mx-auto max-w-[1600px] space-y-8 p-5 lg:p-8;
+  }
+
+  .surface-card {
+    @apply rounded-xl border bg-card;
+    border-color: var(--border);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+      0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .surface-card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .surface-card-hover:hover {
+    border-color: var(--border-strong);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 4px 24px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(13, 148, 136, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.06),
+      transparent
+    );
+    animation: shimmer 1.8s infinite;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .text-display {
+    @apply text-[28px] font-semibold tracking-[-0.02em] text-foreground;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-metric {
+    @apply text-[26px] font-semibold tracking-[-0.03em];
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text-label {
+    @apply text-[13px] font-medium tracking-[-0.01em] text-muted-foreground;
+  }
+
+  .text-caption {
+    @apply text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground;
+  }
+
+  .dashboard-bg {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(13, 148, 136, 0.09), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(217, 119, 6, 0.05), transparent),
+      var(--background);
+  }
+
+  .icon-well {
+    @apply flex items-center justify-center rounded-[10px];
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  }
+
+  .delta-positive {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium;
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.15) inset;
+  }
+
+  .delta-negative {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium;
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.15) inset;
+  }
+}
