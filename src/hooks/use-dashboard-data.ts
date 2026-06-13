@@ -86,6 +86,13 @@ export function useConversionFunnel() {
   });
 }
 
+export function useSessionsTrend() {
+  return useQuery({
+    queryKey: ["analytics", "sessions-trend"],
+    queryFn: analyticsService.getSessionsTrend,
+  });
+}
+
 export function useRevenueMetrics() {
   return useQuery({
     queryKey: ["revenue", "metrics"],

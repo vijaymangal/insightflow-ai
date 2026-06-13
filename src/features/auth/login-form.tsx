@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Github, Sparkles } from "lucide-react";
+import { Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,31 +22,23 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    login(email || "alex@insightflow.ai");
+    await new Promise((r) => setTimeout(r, 400));
+    login(email || "jordan@insightflow.io");
     router.push("/dashboard");
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4 }}
-      className="flex w-full max-w-sm flex-col"
-    >
+    <div className="flex w-full max-w-sm flex-col">
       <div className="mb-8 lg:hidden">
-        <Link href="/" className="inline-flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Sparkles className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <span className="font-semibold">InsightFlow AI</span>
+        <Link href="/" className="text-[15px] font-semibold">
+          InsightFlow
         </Link>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Welcome back</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Sign in to your account to continue
+        <h2 className="text-xl font-semibold tracking-tight">Sign in</h2>
+        <p className="mt-1.5 text-[13px] text-muted-foreground">
+          Use your work email to access the workspace.
         </p>
       </div>
 
@@ -66,14 +57,13 @@ export function LoginForm() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
-            <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+            <Link href="/forgot-password" className="text-[12px] text-muted-foreground hover:text-foreground">
               Forgot password?
             </Link>
           </div>
           <Input
             id="password"
             type="password"
-            placeholder="•••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -85,47 +75,38 @@ export function LoginForm() {
             checked={rememberMe}
             onCheckedChange={(checked) => setRememberMe(checked === true)}
           />
-          <Label htmlFor="remember" className="text-sm font-normal text-muted-foreground">
-            Remember me for 30 days
+          <Label htmlFor="remember" className="text-[13px] font-normal text-muted-foreground">
+            Remember this device
           </Label>
         </div>
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign in"}
+          {isLoading ? "Signing in…" : "Continue"}
         </Button>
       </form>
 
       <div className="relative my-6">
         <Separator />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
-          or continue with
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-[11px] text-muted-foreground">
+          or
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" type="button">
-          <Chrome className="mr-2 h-4 w-4" />
+        <Button variant="outline" type="button" disabled>
           Google
         </Button>
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" disabled>
           <Github className="mr-2 h-4 w-4" />
           GitHub
         </Button>
       </div>
 
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link href="/register" className="font-medium text-primary hover:underline">
-          Create account
+      <p className="mt-8 text-center text-[13px] text-muted-foreground">
+        No account?{" "}
+        <Link href="/register" className="text-foreground underline-offset-4 hover:underline">
+          Request access
         </Link>
       </p>
-    </motion.div>
-  );
-}
-
-function Chrome(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l7.947 13.789C11.221 18.707 11.592 19 12 19s.779-.293 1.421-.71l7.947-13.789C19.169 1.757 15.789 0 12 0zm-1.053 16.172L3.337 5.006C5.115 2.246 8.417.5 12 .5c3.583 0 6.883 1.746 8.663 4.506l-7.716 11.166z" />
-    </svg>
+    </div>
   );
 }

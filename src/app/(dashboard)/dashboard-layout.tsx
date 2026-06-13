@@ -11,12 +11,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useKeyboardShortcuts();
 
   return (
-    <div className="min-h-screen dashboard-bg">
+    <div className="min-h-screen bg-background">
       <AppSidebar />
       <div
         className={cn(
-          "min-h-screen transition-all duration-300 ease-out",
-          isCollapsed ? "lg:pl-[60px]" : "lg:pl-[240px]"
+          "min-h-screen transition-[padding] duration-200",
+          isCollapsed ? "lg:pl-[56px]" : "lg:pl-[220px]"
         )}
       >
         {children}

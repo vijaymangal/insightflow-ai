@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 import { Download, FileText, Clock, Loader2, Calendar } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard-header";
@@ -19,90 +18,69 @@ const statusConfig: Record<Report["status"], { label: string; variant: "success"
   scheduled: { label: "Scheduled", variant: "secondary", icon: Calendar },
 };
 
-const typeColors: Record<Report["type"], string> = {
-  revenue: "bg-primary/10 text-primary",
-  customers: "bg-success/10 text-success",
-  analytics: "bg-warning/10 text-warning",
-  performance: "bg-secondary/10 text-secondary",
-};
-
 export default function ReportsPage() {
   const { data: reports, isLoading, isError, refetch } = useReports();
 
   return (
     <>
-      <DashboardHeader title="Reports" description="Generate, schedule, and download business reports" />
+      <DashboardHeader title="Reports" />
       <PageTransition>
         <PageContainer>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-muted-foreground">
-              {reports?.length ?? 0} reports available
-            </p>
-            <Button size="sm">
-              <FileText className="mr-2 h-4 w-4" />
-              Generate New Report
+          <div className="flex items-center justify-between">
+            <p className="text-[13px] text-muted-foreground">{reports?.length ?? 0} reports</p>
+            <Button size="sm" variant="outline" disabled>
+              New report
             </Button>
           </div>
 
           {isLoading ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-48 rounded-xl" />
+                <Skeleton key={i} className="h-36 rounded-lg" />
               ))}
             </div>
           ) : isError ? (
             <ErrorState onRetry={() => refetch()} />
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {reports?.map((report, index) => {
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {reports?.map((report) => {
                 const status = statusConfig[report.status];
                 const StatusIcon = status.icon;
 
                 return (
-                  <motion.div
-                    key={report.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="group rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${typeColors[report.type]}`}>
-                        <FileText className="h-5 w-5" />
-                      </div>
-                      <Badge variant={status.variant} className="gap-1">
+                  <div key={report.id} className="surface-card flex flex-col p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-[13px] font-medium">{report.title}</h3>
+                      <Badge variant={status.variant} className="shrink-0 gap-1 text-[10px]">
                         <StatusIcon className={`h-3 w-3 ${report.status === "generating" ? "animate-spin" : ""}`} />
                         {status.label}
                       </Badge>
                     </div>
-
-                    <h3 className="mt-4 text-sm font-semibold">{report.title}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                      {report.description}
-                    </p>
-
-                    <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="rounded bg-muted px-1.5 py-0.5 font-mono">{report.format}</span>
-                      {report.schedule && (
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {report.schedule}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                      <span className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(report.lastGenerated), { addSuffix: true })}
-                      </span>
+                    <p className="mt-1.5 flex-1 text-[12px] text-muted-foreground">{report.description}</p>
+                    <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+                      <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                        <span className="font-mono">{report.format}</span>
+                        {report.schedule && (
+                          <>
+                            <span>·</span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {report.schedule}
+                            </span>
+                          </>
+                        )}
+                      </div>
                       {report.status === "ready" && (
-                        <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs opacity-0 transition-opacity group-hover:opacity-100">
+                        <Button variant="ghost" size="sm" className="h-7 gap-1 px-2 text-[11px]" disabled>
                           <Download className="h-3 w-3" />
                           Download
                         </Button>
                       )}
                     </div>
-                  </motion.div>
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      {formatDistanceToNow(new Date(report.lastGenerated), { addSuffix: true })}
+                    </p>
+                  </div>
                 );
               })}
             </div>

@@ -8,13 +8,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("light", "dark");
+    root.classList.remove("dark");
 
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.classList.add(systemTheme);
-    } else {
-      root.classList.add(theme);
+      if (systemTheme === "dark") root.classList.add("dark");
+    } else if (theme === "dark") {
+      root.classList.add("dark");
     }
   }, [theme]);
 

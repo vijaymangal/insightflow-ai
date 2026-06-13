@@ -36,7 +36,7 @@ export default function DashboardPage() {
   if (kpisError) {
     return (
       <>
-        <DashboardHeader title="Dashboard" description="Overview of your business metrics" />
+        <DashboardHeader title="Dashboard" />
         <PageContainer>
           <ErrorState onRetry={() => refetchKpis()} />
         </PageContainer>
@@ -46,27 +46,27 @@ export default function DashboardPage() {
 
   return (
     <>
-      <DashboardHeader title="Dashboard" description="Overview of your business metrics" />
+      <DashboardHeader title="Dashboard" />
       <PageTransition>
         <PageContainer>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {kpisLoading
               ? Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)
-              : kpis?.map((kpi, index) => <StatCard key={kpi.id} kpi={kpi} index={index} />)}
+              : kpis?.map((kpi) => <StatCard key={kpi.id} kpi={kpi} />)}
           </div>
 
           <div className="grid gap-5 lg:grid-cols-2">
             {revenueLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Revenue Trend" description="Monthly revenue vs target" delay={0.15}>
+              <ChartCard title="Revenue" description="Monthly vs target">
                 <RevenueTrendChart data={revenueTrend ?? []} />
               </ChartCard>
             )}
             {customerLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Customer Growth" description="Total active customers over time" delay={0.2}>
+              <ChartCard title="Customers" description="Active accounts">
                 <CustomerGrowthChart data={customerGrowth ?? []} />
               </ChartCard>
             )}
@@ -77,7 +77,7 @@ export default function DashboardPage() {
               {performanceLoading ? (
                 <ChartCardSkeleton />
               ) : (
-                <ChartCard title="Monthly Performance" description="MRR, expansion, and churn breakdown" delay={0.25}>
+                <ChartCard title="MRR breakdown" description="Expansion, churn, net new">
                   <MonthlyPerformanceChart data={monthlyPerformance ?? []} />
                 </ChartCard>
               )}
@@ -85,7 +85,7 @@ export default function DashboardPage() {
             {breakdownLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Revenue Breakdown" description="Revenue by plan tier" delay={0.3}>
+              <ChartCard title="By plan" description="Enterprise, Pro, Starter">
                 <RevenueBreakdownChart data={revenueBreakdown ?? []} />
               </ChartCard>
             )}

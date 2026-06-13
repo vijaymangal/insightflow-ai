@@ -134,7 +134,3 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
     </header>
   );
 }
-
-export function UserMenu() {
-  return null;
-}

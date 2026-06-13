@@ -16,6 +16,7 @@ import {
   analyticsKPIs,
   trafficSourcesData,
   conversionFunnelData,
+  sessionsTrendData,
 } from "@/data/mock-data";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -75,9 +76,9 @@ export const analyticsService = {
     await delay(400);
     return conversionFunnelData;
   },
-  async getRevenueTrend() {
+  async getSessionsTrend() {
     await delay(400);
-    return revenueTrendData;
+    return sessionsTrendData;
   },
 };
 

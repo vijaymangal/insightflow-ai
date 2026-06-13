@@ -33,11 +33,10 @@ function CustomTooltip({ active, payload, label, formatter }: CustomTooltipProps
 
   return (
     <div
-      className="rounded-lg px-3.5 py-2.5 shadow-2xl"
+      className="rounded-lg border px-3.5 py-2.5"
       style={{
         background: CHART.colors.tooltipBg,
-        border: `1px solid ${CHART.colors.tooltipBorder}`,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04) inset",
+        borderColor: CHART.colors.tooltipBorder,
       }}
     >
       <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -49,7 +48,7 @@ function CustomTooltip({ active, payload, label, formatter }: CustomTooltipProps
             <div className="flex items-center gap-2">
               <div
                 className="h-1.5 w-1.5 rounded-full"
-                style={{ backgroundColor: entry.color, boxShadow: `0 0 6px ${entry.color}80` }}
+                style={{ backgroundColor: entry.color }}
               />
               <span className="text-muted-foreground">{entry.name}</span>
             </div>
@@ -194,10 +193,7 @@ export function RevenueBreakdownChart({ data }: { data: ChartDataPoint[] }) {
               <div className="flex items-center gap-2.5">
                 <div
                   className="h-2 w-2 rounded-full"
-                  style={{
-                    backgroundColor: CHART.pie[index % CHART.pie.length],
-                    boxShadow: `0 0 8px ${CHART.pie[index % CHART.pie.length]}60`,
-                  }}
+                  style={{ backgroundColor: CHART.pie[index % CHART.pie.length] }}
                 />
                 <span className="text-[13px] text-muted-foreground transition-colors group-hover:text-foreground">
                   {item.name}
@@ -320,6 +316,39 @@ export function TrafficSourcesChart({ data }: { data: ChartDataPoint[] }) {
         <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
         <Bar dataKey="value" name="Sessions" fill={CHART.colors.primary} radius={[4, 4, 0, 0]} maxBarSize={40} />
       </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
+export function SessionsTrendChart({ data }: { data: ChartDataPoint[] }) {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={data} margin={CHART.margin}>
+        <CartesianGrid {...gridProps} />
+        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={axisTickStyle} dy={8} />
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tick={axisTickStyle}
+          tickFormatter={(v) => formatCompact(v)}
+          width={48}
+        />
+        <Tooltip content={<CustomTooltip />} cursor={{ stroke: CHART.colors.primary, strokeWidth: 1, strokeDasharray: "4 4", strokeOpacity: 0.4 }} />
+        <Line
+          type="monotone"
+          dataKey="sessions"
+          name="Sessions"
+          stroke={CHART.colors.primary}
+          strokeWidth={2}
+          dot={false}
+          activeDot={{
+            r: 5,
+            fill: CHART.colors.primary,
+            stroke: "#09090b",
+            strokeWidth: 2,
+          }}
+        />
+      </LineChart>
     </ResponsiveContainer>
   );
 }

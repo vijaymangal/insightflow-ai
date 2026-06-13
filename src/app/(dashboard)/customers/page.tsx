@@ -13,7 +13,7 @@ export default function CustomersPage() {
 
   return (
     <>
-      <DashboardHeader title="Customers" description="Manage and analyze your customer base" />
+      <DashboardHeader title="Customers" />
       <PageTransition>
         <PageContainer>
           {isLoading ? (

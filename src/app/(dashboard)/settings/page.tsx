@@ -25,7 +25,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <DashboardHeader title="Settings" description="Manage your account and preferences" />
+      <DashboardHeader title="Settings" />
       <PageTransition>
         <PageContainer className="space-y-6">
           <Tabs defaultValue="profile" className="space-y-6">
@@ -104,7 +104,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">Payment method</p>
-                    <p className="text-xs text-muted-foreground">Visa ending in 4242</p>
+                    <p className="text-xs text-muted-foreground">Visa ending in 8210</p>
                   </div>
                   <Button variant="outline" size="sm">Update</Button>
                 </div>
@@ -158,10 +158,10 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium">Animations</p>
-                      <p className="text-xs text-muted-foreground">Enable smooth page transitions</p>
+                      <p className="text-sm font-medium">Compact layout</p>
+                      <p className="text-xs text-muted-foreground">Reduce spacing in tables and lists</p>
                     </div>
-                    <Switch defaultChecked />
+                    <Switch />
                   </div>
                 </div>
               </SettingsCard>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { PageTransition } from "@/components/page-transition";
 import { PageContainer } from "@/components/page-container";
@@ -15,14 +15,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  RevenueTrendChart,
   TrafficSourcesChart,
   FunnelChart,
   CustomerGrowthChart,
+  SessionsTrendChart,
 } from "@/components/charts";
 import {
   useAnalyticsKPIs,
-  useRevenueTrend,
+  useSessionsTrend,
   useTrafficSources,
   useConversionFunnel,
   useCustomerGrowth,
@@ -30,14 +30,14 @@ import {
 
 export default function AnalyticsPage() {
   const { data: kpis, isLoading: kpisLoading } = useAnalyticsKPIs();
-  const { data: revenueTrend, isLoading: revenueLoading } = useRevenueTrend();
+  const { data: sessionsTrend, isLoading: sessionsLoading } = useSessionsTrend();
   const { data: trafficSources, isLoading: trafficLoading } = useTrafficSources();
   const { data: funnel, isLoading: funnelLoading } = useConversionFunnel();
   const { data: customerGrowth, isLoading: customerLoading } = useCustomerGrowth();
 
   return (
     <>
-      <DashboardHeader title="Analytics" description="Deep dive into your business performance" />
+      <DashboardHeader title="Analytics" />
       <PageTransition>
         <PageContainer>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -55,47 +55,46 @@ export default function AnalyticsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <Button variant="outline" size="sm">
-              <Download className="mr-2 h-4 w-4" />
-              Export Report
+            <Button variant="outline" size="sm" disabled>
+              Export
             </Button>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {kpisLoading
               ? Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)
-              : kpis?.map((kpi, index) => <StatCard key={kpi.id} kpi={kpi} index={index} />)}
+              : kpis?.map((kpi) => <StatCard key={kpi.id} kpi={kpi} />)}
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            {revenueLoading ? (
+          <div className="grid gap-5 lg:grid-cols-2">
+            {sessionsLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Revenue Trend" description="Revenue performance over time">
-                <RevenueTrendChart data={revenueTrend ?? []} />
+              <ChartCard title="Sessions" description="Monthly total">
+                <SessionsTrendChart data={sessionsTrend ?? []} />
               </ChartCard>
             )}
             {trafficLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Traffic Sources" description="Sessions by acquisition channel">
+              <ChartCard title="Traffic sources" description="By channel">
                 <TrafficSourcesChart data={trafficSources ?? []} />
               </ChartCard>
             )}
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-5 lg:grid-cols-2">
             {funnelLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Conversion Funnel" description="Visitor to customer journey">
+              <ChartCard title="Conversion funnel" description="Visitor to paid">
                 <FunnelChart data={funnel ?? []} />
               </ChartCard>
             )}
             {customerLoading ? (
               <ChartCardSkeleton />
             ) : (
-              <ChartCard title="Customer Growth" description="Customer acquisition trends">
+              <ChartCard title="Customers" description="Active accounts">
                 <CustomerGrowthChart data={customerGrowth ?? []} />
               </ChartCard>
             )}
